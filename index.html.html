@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misztikus Rituálék</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    background: #000;
+    color: #e6e6e6;
+    overflow-x: hidden;
+}
+
+/* MOZGÓ HÁTTÉR */
+body::before {
+    content:"";
+    position:fixed;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(255,0,0,0.05), transparent 70%);
+    animation:moveBg 25s linear infinite;
+    z-index:-1;
+}
+@keyframes moveBg {
+    0%{transform:translate(0,0);}
+    100%{transform:translate(-50%,-50%);}
+}
+
+h1, h2 {
+    text-align: center;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px crimson;
+}
+
+.container {
+    padding: 40px;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.card {
+    background: rgba(20,20,20,0.8);
+    border: 1px solid crimson;
+    border-radius: 15px;
+    padding: 20px;
+    transition: 0.4s;
+    box-shadow: 0 0 20px rgba(255,0,0,0.2);
+    position:relative;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px crimson;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    filter: brightness(0.8);
+}
+
+.button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    background: crimson;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* SZEKCIÓ */
+.section-box {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(20,20,20,0.7);
+    border: 1px solid crimson;
+    border-radius: 10px;
+}
+
+/* BELÉPŐ */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    cursor: pointer;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid crimson;
+    box-shadow: 0 0 40px crimson;
+}
+
+/* ZENE GOMB */
+.music-btn {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background: crimson;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* MOBIL FIX */
+@media (max-width:600px){
+    h1 { font-size:22px; }
+    h2 { font-size:18px; }
+    .container { padding:20px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" onclick="startSite()">
+    <h1>KATTINTS A BELÉPÉSHEZ</h1>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-btn" onclick="playMusic()">🔊</div>
+
+<div class="container">
+    <h1>RITUÁLÉK ÉS MÁGIA</h1>
+
+    <div class="section-box">
+        <h2>Ki vagyok?</h2>
+        <p>Több mint hosszú évek óta foglalkozom a mágia világával.</p>
+    </div>
+
+    <div class="section-box">
+        <h2>Miért bízd rám?</h2>
+        <p>Minden rituálé személyre szabott.</p>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <img src="kep1.png" onerror="this.src='https://via.placeholder.com/300x200'">
+            <h2>Pénzmágia</h2>
+            <button class="button" onclick="openPopup('penz')">Választom</button>
+        </div>
+
+        <div class="card">
+            <img src="kep2.png" onerror="this.src='https://via.placeholder.com/300x200'">
+            <h2>Szerelmi mágia</h2>
+            <button class="button" onclick="openPopup('szerelem')">Választom</button>
+        </div>
+
+        <div class="card">
+            <img src="kep3.png" onerror="this.src='https://via.placeholder.com/300x200'">
+            <h2>Voodoo mágia</h2>
+            <button class="button" onclick="openPopup('voodoo')">Választom</button>
+        </div>
+
+        <div class="card">
+            <img src="kep4.png" onerror="this.src='https://via.placeholder.com/300x200'">
+            <h2>Átok / Rontás levétel</h2>
+            <button class="button" onclick="openPopup('atok')">Választom</button>
+        </div>
+
+    </div>
+
+    <div class="section-box">
+        <h2>Kapcsolat</h2>
+        <p>Email: <b>drakanmagus@gmail.com</b></p>
+        <p>WhatsApp: +36 30 690 2002</p>
+    </div>
+
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-content" id="popupContent"></div>
+</div>
+
+<script>
+let phone = "36306902002";
+let audio = document.getElementById("bgMusic");
+
+function startSite() {
+    document.querySelector(".overlay").style.display = "none";
+    playMusic();
+}
+
+function playMusic(){
+    audio.volume = 0.6;
+    audio.play().catch(()=>{});
+}
+
+function openPopup(type) {
+    let content = "";
+    let message = "";
+
+    if(type==="penz"){content="Pénzmágia<br>25 000 Ft";message="Pénzmágia";}
+    if(type==="szerelem"){content="Szerelmi mágia<br>30 000 Ft";message="Szerelmi";}
+    if(type==="voodoo"){content="Voodoo<br>40 000 Ft";message="Voodoo";}
+    if(type==="atok"){content="Átok levétel<br>35 000 Ft";message="Átok";}
+
+    let link="https://wa.me/"+phone+"?text="+encodeURIComponent(message);
+
+    document.getElementById("popupContent").innerHTML=`
+    <h2>${content}</h2>
+    <a href="${link}" target="_blank">
+    <button style="background:green;">WhatsApp rendelés</button>
+    </a>
+    <div class="close" onclick="closePopup()">Bezárás</div>
+    `;
+
+    document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+    document.getElementById("popup").style.display="none";
+}
+</script>
+
+</body>
+</html>
